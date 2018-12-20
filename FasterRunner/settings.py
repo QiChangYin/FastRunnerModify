@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'FasterRunner.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'FasterRunner',  # 新建数据库名
+        'NAME': 'mysql',  # 新建数据库名
         'USER': 'root',  # 数据库登录名
-        'PASSWORD': 'lcc123456',  # 数据库登录密码
+        'PASSWORD': '123456',  # 数据库登录密码
         'HOST': 'localhost',  # 数据库所在服务器ip地址
         'PORT': '3306',  # 监听端口 默认3306即可
     }
