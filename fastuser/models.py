@@ -2,6 +2,7 @@ from django.db import models
 
 
 # Create your models here.
+# 数据库中生成的表名称 默认 app名称 + 下划线 + 类名
 
 class BaseTable(models.Model):
     """

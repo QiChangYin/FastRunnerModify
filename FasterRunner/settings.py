@@ -30,7 +30,11 @@ ALLOWED_HOSTS = ['*']
 INVALID_TIME = 60 * 60
 
 # Application definition
+# WSGI（Web Server Gateway Interface）是一种规范，
+# 它定义了使用python编写的web app与web server之间接口格式，实现web app与web server间的解耦。
+# python标准库提供的独立WSGI服务器称为wsgiref。
 
+# 下面是APP路径
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
     'corsheaders'
 ]
 
+# 中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -123,6 +128,8 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+
+# 静态文件
 STATIC_URL = '/static/'
 
 # rest_framework config

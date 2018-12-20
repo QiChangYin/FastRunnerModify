@@ -1,0 +1,127 @@
+HttpResponse对象
+对于HttpRequest对象来说，是由django自动创建的，但是，
+HttpResponse对象就必须我们自己创建。每个view请求处理方法必须返回一个HttpResponse对象。
+在HttpResponse对象上扩展的常用方法：
+页面渲染：render（推荐），render_to_response,
+页面跳转：redirect
+locals：   可以直接将对应视图函数中所有的变量传给模板
+
+1、models.AutoField　　自增列 = int(11)
+　　如果没有的话，默认会生成一个名称为 id 的列，如果要显示的自定义一个自增列，必须将给列设置为主键 primary_key=True。
+2、models.CharField　　字符串字段
+　　必须 max_length 参数
+3、models.BooleanField　　布尔类型=tinyint(1)
+　　不能为空，Blank=True
+4、models.ComaSeparatedIntegerField　　用逗号分割的数字=varchar
+　　继承CharField，所以必须 max_lenght 参数
+5、models.DateField　　日期类型 date
+　　对于参数，auto_now = True 则每次更新都会更新这个时间；auto_now_add 则只是第一次创建添加，之后的更新不再改变。
+6、models.DateTimeField　　日期类型 datetime
+　　同DateField的参数
+7、models.Decimal　　十进制小数类型 = decimal
+　　必须指定整数位max_digits和小数位decimal_places
+8、models.EmailField　　字符串类型（正则表达式邮箱） =varchar
+　　对字符串进行正则表达式
+9、models.FloatField　　浮点类型 = double
+10、models.IntegerField　　整形
+11、models.BigIntegerField　　长整形
+　　integer_field_ranges = {
+　　　　'SmallIntegerField': (-32768, 32767),
+　　　　'IntegerField': (-2147483648, 2147483647),
+　　　　'BigIntegerField': (-9223372036854775808, 9223372036854775807),
+　　　　'PositiveSmallIntegerField': (0, 32767),
+　　　　'PositiveIntegerField': (0, 2147483647),
+　　}
+12、models.IPAddressField　　字符串类型（ip4正则表达式）
+13、models.GenericIPAddressField　　字符串类型（ip4和ip6是可选的）
+　　参数protocol可以是：both、ipv4、ipv6
+　　验证时，会根据设置报错
+14、models.NullBooleanField　　允许为空的布尔类型
+15、models.PositiveIntegerFiel　　正Integer
+16、models.PositiveSmallIntegerField　　正smallInteger
+17、models.SlugField　　减号、下划线、字母、数字
+18、models.SmallIntegerField　　数字
+　　数据库中的字段有：tinyint、smallint、int、bigint
+19、models.TextField　　字符串=longtext
+20、models.TimeField　　时间 HH:MM[:ss[.uuuuuu]]
+21、models.URLField　　字符串，地址正则表达式
+22、models.BinaryField　　二进制
+23、models.ImageField   图片
+24、models.FilePathField 文件
+
+class UserInfo(models.Model):
+        nid = models.AutoField(primary_key=True)
+        username = models.CharField(max_length=32)
+        class Meta:
+            # 数据库中生成的表名称 默认 app名称 + 下划线 + 类名
+            db_table = "table_name"
+
+            # 联合索引
+            index_together = [
+                ("pub_date", "deadline"),
+            ]
+
+            # 联合唯一索引
+            unique_together = (("driver", "restaurant"),)
+
+            # admin中显示的表名称
+            verbose_name
+
+            # verbose_name加s
+            verbose_name_plural
+
+    更多：https://docs.djangoproject.com/en/1.10/ref/models/options/
+
+元信息
+
+ # 数据库中生成的表名称 默认 app名称 + 下划线 + 类名
+b、连表结构
+一对多：models.ForeignKey(其他表)
+多对多：models.ManyToManyField(其他表)
+一对一：models.OneToOneField(其他表)
+应用场景：
+一对多：当一张表中创建一行数据时，有一个单选的下拉框（可以被重复选择）
+例如：创建用户信息时候，需要选择一个用户类型【普通用户】【金牌用户】【铂金用户】等。
+多对多：在某表中创建一行数据是，有一个可以多选的下拉框
+例如：创建用户信息，需要为用户指定多个爱好
+一对一：在某表中创建一行数据时，有一个单选的下拉框（下拉框中的内容被用过一次就消失了
+例如：原有含10列数据的一张表保存相关信息，经过一段时间之后，10列无法满足需求，需要为原来的表再添加5列数据
+
+user_info_obj = models.UserInfo.objects.get(name='nick')
+user_info_objs = models.UserInfo.objects.all()
+
+group_obj = models.UserGroup.objects.get(caption='CTO')
+group_objs = models.UserGroup.objects.all()
+
+# 添加数据
+#group_obj.user_info.add(user_info_obj)
+#group_obj.user_info.add(*user_info_objs)
+
+# 删除数据
+#group_obj.user_info.remove(user_info_obj)
+#group_obj.user_info.remove(*user_info_objs)
+
+# 添加数据
+#user_info_obj.usergroup_set.add(group_obj)
+#user_info_obj.usergroup_set.add(*group_objs)
+
+# 删除数据
+#user_info_obj.usergroup_set.remove(group_obj)
+#user_info_obj.usergroup_set.remove(*group_objs)
+
+# 获取数据
+#print group_obj.user_info.all()
+#print group_obj.user_info.all().filter(id=1)
+
+# 获取数据
+#print user_info_obj.usergroup_set.all()
+#print user_info_obj.usergroup_set.all().filter(caption='CTO')
+#print user_info_obj.usergroup_set.all().filter(caption='DBA')
+
+    # 添加多对多
+    # userinfo_id_1 = models.UserInfo.objects.filter(id=1)
+    # usergroup_id_1 = models.UserGroup.objects.filter(id=1).first()
+    # usergroup_id_1.user_info.add(*userinfo_id_1)
+
+多对多操作
+
